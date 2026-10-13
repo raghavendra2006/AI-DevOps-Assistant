@@ -36,6 +36,11 @@ app:
     refill-seconds: 60
   cors:
     allowed-origins: "http://localhost:5173,http://localhost:3000"
+  ai-service:
+    url: ${AI_SERVICE_URL:http://localhost:8000}
+    api-key: ${AI_SERVICE_API_KEY:devops-ai-secret-key-2026}
+    connect-timeout-ms: 5000
+    read-timeout-ms: 45000
 
 springdoc:
   api-docs:
