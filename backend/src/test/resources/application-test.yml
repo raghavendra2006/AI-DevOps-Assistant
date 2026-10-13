@@ -25,3 +25,8 @@ app:
     refill-seconds: 60
   cors:
     allowed-origins: "*"
+  ai-service:
+    url: "http://localhost:8000"
+    api-key: "test-ai-key"
+    connect-timeout-ms: 1000
+    read-timeout-ms: 1000
