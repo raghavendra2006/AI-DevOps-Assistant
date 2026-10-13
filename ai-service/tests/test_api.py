@@ -1,5 +1,4 @@
 from unittest.mock import patch
-from app.schemas.analyze import DevOpsAnalysisResult
 
 
 def test_health_endpoint(test_client):
@@ -56,14 +55,16 @@ def test_ingest_text_endpoint(test_client, auth_headers):
 def test_analyze_endpoint_authorized(test_client, auth_headers, mock_llm_provider):
     with patch("app.api.routes.analyze.LLMFactory.get_provider", return_value=mock_llm_provider):
         payload = {
-            "query": "Pod failed with OOMKilled exit code 137",
-            "task_type": "log_analysis",
+            "content": "Pod payment-service terminated with exit code 137 (OOMKilled) Back-off restarting failed container",
+            "input_type": "auto",
             "top_k": 2
         }
         response = test_client.post("/api/v1/analyze", json=payload, headers=auth_headers)
         assert response.status_code == 200
         data = response.json()
-        assert "analysis" in data
-        assert data["analysis"]["task"] == "log_analysis"
-        assert data["analysis"]["severity"] == "CRITICAL"
-        assert len(data["analysis"]["recommended_actions"]) >= 1
+        assert data["severity"] == "CRITICAL"
+        assert "OOMKilled" in data["root_cause"]
+        assert data["detected_input_type"] == "kubernetes"
+        assert len(data["commands"]) >= 1
+        assert data["commands"][0]["risk_level"] in ("SAFE", "CAUTION", "DANGEROUS")
+        assert "confidence" in data
