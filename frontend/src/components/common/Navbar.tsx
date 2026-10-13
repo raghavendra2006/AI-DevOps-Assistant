@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { logout } from '../../features/auth/authSlice';
-import { Shield, Terminal, LogOut, Users } from 'lucide-react';
+import { Shield, Terminal, LogOut, Users, Sparkles } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -28,6 +28,10 @@ export const Navbar: React.FC = () => {
       {isAuthenticated && user && (
         <div className="nav-links">
           <Link to="/" className="nav-link">Dashboard</Link>
+          <Link to="/analyze" className="nav-link" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', color: '#a5b4fc', fontWeight: 600 }}>
+            <Sparkles size={16} />
+            <span>Analyzer</span>
+          </Link>
           {isAdmin && (
             <Link to="/admin/users" className="nav-link" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
               <Users size={16} />
