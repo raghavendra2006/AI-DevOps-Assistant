@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ai-devops-backend
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:aidevops}
+    username: ${DB_USER:aidevops}
+    password: ${DB_PASSWORD:password123}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+app:
+  jwt:
+    # 256-bit HMAC key
+    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    access-token-expiration-ms: 900000 # 15 minutes
+    refresh-token-expiration-ms: 604800000 # 7 days
+    verification-token-expiration-ms: 86400000 # 24 hours
+  rate-limit:
+    capacity: 5
+    refill-seconds: 60
+  cors:
+    allowed-origins: "http://localhost:5173,http://localhost:3000"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
