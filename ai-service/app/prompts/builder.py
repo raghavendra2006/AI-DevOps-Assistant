@@ -8,7 +8,10 @@ class PromptBuilder:
 
     @staticmethod
     def build_system_prompt(custom_instruction: Optional[str] = None) -> str:
-        prompt = DEVOPS_EXPERT_SYSTEM_PROMPT
+        prompt = (
+            DEVOPS_EXPERT_SYSTEM_PROMPT
+            + "\n\nYou MUST return your analysis as valid JSON matching the schema. For each remediation command, specify its exact risk_level: SAFE (read-only inspection/get/describe), CAUTION (state modifications/restarts/scales), or DANGEROUS (data destruction/force deletes/destroys)."
+        )
         if custom_instruction:
             prompt += f"\n\nADDITIONAL INSTRUCTION:\n{custom_instruction}"
         return prompt
@@ -24,7 +27,6 @@ class PromptBuilder:
             meta = chunk.get("metadata", {})
             source = meta.get("source", "Unknown")
             product = meta.get("product", "General")
-            version = meta.get("version", "")
             url = meta.get("url", "")
             score = chunk.get("score", 0.0)
 
@@ -52,8 +54,8 @@ class PromptBuilder:
 
         prompt_parts.append(
             f"### REFERENCE DOCUMENTATION CONTEXT:\n{formatted_context}\n\n"
-            f"### USER QUERY / ERROR DIAGNOSTIC:\n{query}\n\n"
-            f"Analyze the query using the reference documentation and provide an authoritative solution."
+            f"### USER LOG / INCIDENT DIAGNOSTIC:\n{query}\n\n"
+            f"Diagnose the incident, identify root cause, provide step-by-step remediation, and specify safe/caution/dangerous CLI commands."
         )
 
         return "\n".join(prompt_parts)
