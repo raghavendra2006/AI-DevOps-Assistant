@@ -36,3 +36,16 @@ pnpm-debug.log*
 
 # Database & Docker
 postgres_data/
+chroma_data/
+
+# Python & AI Service
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+.pytest_cache/
+*.egg-info/
+ai-service/data/chroma_db/
