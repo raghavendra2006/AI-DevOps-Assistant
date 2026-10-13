@@ -12,6 +12,8 @@ import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
+import { IncidentAnalyzerPage } from './pages/IncidentAnalyzerPage';
+import { IncidentResultPage } from './pages/IncidentResultPage';
 import { UnauthorizedPage } from './pages/UnauthorizedPage';
 
 export const App: React.FC = () => {
@@ -39,6 +41,8 @@ export const App: React.FC = () => {
         {/* Authenticated Protected Routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<DashboardPage />} />
+          <Route path="/analyze" element={<IncidentAnalyzerPage />} />
+          <Route path="/incidents/:id" element={<IncidentResultPage />} />
 
           {/* Admin RBAC Route */}
           <Route element={<RoleGuard allowedRoles={['ROLE_ADMIN']} />}>
